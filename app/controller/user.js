@@ -24,7 +24,7 @@ class UserController extends Controller {
       if (result.length) {
         ctx.body = { data: result, success: true };
       } else {
-        ctx.body = { data: [ result ], success: true };
+        ctx.body = { data: [result], success: true };
       }
     } else {
       ctx.body = { data: null, success: false };
@@ -46,10 +46,17 @@ class UserController extends Controller {
       await pump(stream, writeStream);
       files.push(filename);
     }
+    let storage = { ...parts.field, tx_pic: `/public/tx_pic/${files[0]}` };
 
-    ctx.body = files;
-    console.log(ctx.request.body, files, parts.field);
-    // const result = await this.app.mysql.insert('t_people', ctx.request.body);
+    console.log(ctx.request.body, files, parts.field, storage);
+    const result = await this.app.mysql.insert('t_people', storage);
+    const insertSuccess = result.affectedRows === 1;
+    if (insertSuccess) {
+      //是否插入成功
+      ctx.body = { success: true, data: storage };
+    } else {
+      ctx.body = { success: false, data: null };
+    }
   }
 }
 
