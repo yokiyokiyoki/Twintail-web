@@ -3,9 +3,18 @@
 const Controller = require('egg').Controller;
 
 class AdvController extends Controller {
-  async index() {
-    const user = await this.app.mysql.get('t_people', { id: 1 });
-    this.ctx.body = user;
+  async getAllAdvs() {
+    const ctx = this.ctx;
+    const result = await this.app.mysql.select('t_adv');
+    if (result) {
+      if (result.length) {
+        ctx.body = { data: result, success: true };
+      } else {
+        ctx.body = { data: [result], success: true };
+      }
+    } else {
+      ctx.body = { data: null, success: false };
+    }
   }
   async insertAdv() {
     const ctx = this.ctx;
