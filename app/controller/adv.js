@@ -1,6 +1,8 @@
 'use strict';
-
+const fs = require('fs');
+const path = require('path');
 const Controller = require('egg').Controller;
+const pump = require('mz-modules/pump');
 
 class AdvController extends Controller {
   async getAllAdvs() {
@@ -34,7 +36,7 @@ class AdvController extends Controller {
     }
     let storage = { ...parts.field, photo_url: `/public/adv_pic/${files[0]}` };
 
-    console.log(ctx.request.body, files, parts.field, storage);
+    console.log(ctx.request.body, files, parts.field, storage, parts);
     const result = await this.app.mysql.insert('t_adv', storage);
     const insertSuccess = result.affectedRows === 1;
     if (insertSuccess) {
