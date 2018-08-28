@@ -46,6 +46,10 @@ class AdvController extends Controller {
       ctx.body = { success: false, data: null };
     }
   }
+  async postPhoto() {
+    const ctx = this.ctx;
+    ctx.body = 'success';
+  }
 }
 
 module.exports = AdvController;

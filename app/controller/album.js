@@ -6,8 +6,16 @@ const Controller = require('egg').Controller;
 const pump = require('mz-modules/pump');
 
 class AlbumController extends Controller {
-  async getAlbum() {}
-  async getAllAlbums() {}
+  async getAlbumDetail() {
+    //查某个写真集的详细信息
+    const ctx = this.ctx;
+    const albumId = ctx.query.id;
+    const album = await ctx.service.album.findDetail(albumId);
+    ctx.body = 'user';
+  }
+  async getAllAlbums() {
+    //获取所有写真集
+  }
   async insertAlbum() {
     const ctx = this.ctx;
     const parts = this.ctx.multipart({ autoFields: true });

@@ -9,8 +9,6 @@ class UserController extends Controller {
     const ctx = this.ctx;
     const userId = ctx.query.id;
     const user = await ctx.service.user.find(userId);
-    // const album = await ctx.service.user.find(userId);
-    console.log(ctx.service.user.find, ctx.query);
     if (user) {
       ctx.body = { data: user, success: true };
     } else {
