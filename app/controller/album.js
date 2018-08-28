@@ -22,7 +22,7 @@ class AlbumController extends Controller {
       let album = await ctx.service.album.findDetail(albums[i].id);
       result.push(album);
     }
-    ctx.body = result;
+    ctx.body = { success: true, data: result };
   }
   async insertAlbum() {
     const ctx = this.ctx;
