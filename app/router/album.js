@@ -1,7 +1,7 @@
 'use strict';
 module.exports = app => {
   const { router, controller } = app;
-  router.post('/insertAlbum', controller.album.insertAlbum);
-  router.get('/getAlbumDetail', controller.album.getAlbumDetail);
-  router.get('/getAllAlbums', controller.album.getAllAlbums);
+  router.post('/api/insertAlbum', controller.album.insertAlbum);
+  router.get('/api/getAlbumDetail', controller.album.getAlbumDetail);
+  router.get('/api/getAllAlbums', controller.album.getAllAlbums);
 };
