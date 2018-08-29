@@ -41,7 +41,17 @@ class AlbumController extends Controller {
       files.push(filename);
     }
     let albumStorage = { ...parts.field };
+    //看看数据库里面有没有相同名字的,如果存在则不添加
+    const albums = await this.app.mysql.select('t_album');
 
+    let isExist = albums.some((item, index) => {
+      return item.album_name == parts.field.album_name;
+    });
+    if (isExist) {
+      ctx.body = { success: false, message: '该名字已经存在' };
+      return;
+    }
+    // console.log(isExist);
     const albumResult = await this.app.mysql.insert('t_album', albumStorage);
     const insertAlbumSuccess = albumResult.affectedRows === 1;
     if (insertAlbumSuccess) {
