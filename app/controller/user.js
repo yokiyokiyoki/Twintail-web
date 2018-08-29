@@ -57,7 +57,6 @@ class UserController extends Controller {
       return;
     }
 
-    console.log(ctx.request.body, files, parts.field, storage);
     const result = await this.app.mysql.insert('t_people', storage);
     const insertSuccess = result.affectedRows === 1;
     if (insertSuccess) {
