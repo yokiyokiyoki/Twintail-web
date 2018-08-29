@@ -46,6 +46,17 @@ class UserController extends Controller {
     }
     let storage = { ...parts.field, tx_pic: `/public/tx_pic/${files[0]}` };
 
+    //看看数据库里面有没有相同名字的,如果存在则不添加
+    const albums = await this.app.mysql.select('t_people');
+
+    let isExist = albums.some((item, index) => {
+      return item.username == parts.field.username;
+    });
+    if (isExist) {
+      ctx.body = { success: false, message: '该名字已经存在' };
+      return;
+    }
+
     console.log(ctx.request.body, files, parts.field, storage);
     const result = await this.app.mysql.insert('t_people', storage);
     const insertSuccess = result.affectedRows === 1;
