@@ -23,7 +23,7 @@ class AdvController extends Controller {
     const advId = ctx.query.id;
     const adv = await this.app.mysql.get('t_adv', { id: advId });
     if (adv) {
-      ctx.body = { data: user, success: true };
+      ctx.body = { data: adv, success: true };
     } else {
       ctx.body = { data: null, success: false };
     }
