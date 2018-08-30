@@ -48,6 +48,18 @@ class AlbumController extends Controller {
   async deleteAlbum() {
     const ctx = this.ctx;
     const albumId = ctx.request.body.id;
+    const photoResult = await this.app.mysql.delete('t_photo', {
+      album_id: albumId,
+    });
+    const result = await this.app.mysql.delete('t_album', {
+      id: albumId,
+    });
+    const deleteSuccess = result.affectedRows === 1;
+    if (deleteSuccess) {
+      ctx.body = { success: true };
+    } else {
+      ctx.body = { success: false, message: '删除失败' };
+    }
   }
   async insertAlbum() {
     const ctx = this.ctx;

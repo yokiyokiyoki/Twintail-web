@@ -73,6 +73,28 @@ class UserController extends Controller {
   async deleteUser() {
     const ctx = this.ctx;
     const userId = ctx.request.body.id;
+    const albumResult = await this.app.mysql.select('t_album', {
+      people_id: userId,
+    });
+    for (let i = 0; i < albumResult.length; i++) {
+      let photoResult = await this.app.mysql.delete('t_photo', {
+        album_id: albumResult[i].id,
+      });
+    }
+    for (let i = 0; i < albumResult.length; i++) {
+      const result = await this.app.mysql.delete('t_album', {
+        id: albumResult[i].id,
+      });
+    }
+    const result = await this.app.mysql.delete('t_people', {
+      id: userId,
+    });
+    const deleteSuccess = result.affectedRows === 1;
+    if (deleteSuccess) {
+      ctx.body = { success: true };
+    } else {
+      ctx.body = { success: false, message: '删除失败' };
+    }
   }
 }
 

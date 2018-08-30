@@ -63,6 +63,15 @@ class AdvController extends Controller {
   async deleteAdv() {
     const ctx = this.ctx;
     const advId = ctx.request.body.id;
+    const result = await this.app.mysql.delete('t_adv', {
+      id: advId,
+    });
+    const deleteSuccess = result.affectedRows === 1;
+    if (deleteSuccess) {
+      ctx.body = { success: true };
+    } else {
+      ctx.body = { success: false, message: '删除失败' };
+    }
   }
   async postPhoto() {
     const ctx = this.ctx;
