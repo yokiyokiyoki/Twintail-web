@@ -6,6 +6,21 @@ const Controller = require('egg').Controller;
 const pump = require('mz-modules/pump');
 
 class AlbumController extends Controller {
+  async addAlbumStar() {
+    //加星星
+    const ctx = this.ctx;
+    const albumId = ctx.query.id;
+    const results = await this.app.mysql.query(
+      'update t_album set star = (star + ?) where id = ?',
+      [1, albumId]
+    );
+    const updateSuccess = result.affectedRows === 1;
+    if (updateSuccess) {
+      ctx.body = { success: true };
+    } else {
+      ctx.body = { success: false, message: '添加star失败' };
+    }
+  }
   async getAlbumDetail() {
     //查某个写真集的详细信息
     const ctx = this.ctx;
