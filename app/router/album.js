@@ -4,5 +4,5 @@ module.exports = app => {
   router.post('/api/insertAlbum', controller.album.insertAlbum);
   router.get('/api/getAlbumDetail', controller.album.getAlbumDetail);
   router.get('/api/getAllAlbums', controller.album.getAllAlbums);
-  router.get('/api/addAlbumStar', controller.album.addAlbumStar);
+  router.post('/api/addAlbumStar', controller.album.addAlbumStar);
 };

@@ -16,6 +16,7 @@ class AlbumService extends Service {
         username: people.username,
         weibo: people.weibo,
         tx_pic: people.tx_pic,
+        is_member: people.is_member,
       },
       photo,
     };

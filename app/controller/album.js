@@ -9,12 +9,12 @@ class AlbumController extends Controller {
   async addAlbumStar() {
     //加星星
     const ctx = this.ctx;
-    const albumId = ctx.query.id;
+    const albumId = ctx.request.body.id;
     const results = await this.app.mysql.query(
       'update t_album set star = (star + ?) where id = ?',
       [1, albumId]
     );
-    const updateSuccess = result.affectedRows === 1;
+    const updateSuccess = results.affectedRows === 1;
     if (updateSuccess) {
       ctx.body = { success: true };
     } else {
@@ -37,7 +37,13 @@ class AlbumController extends Controller {
       let album = await ctx.service.album.findDetail(albums[i].id);
       result.push(album);
     }
+    result = result.sort((a, b) => {
+      return a.info.creatAt < b.info.creatAt;
+    });
     ctx.body = { success: true, data: result };
+  }
+  async updateAlbum() {
+    const ctx = this.ctx;
   }
   async insertAlbum() {
     const ctx = this.ctx;

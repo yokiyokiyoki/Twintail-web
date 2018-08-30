@@ -66,6 +66,9 @@ class UserController extends Controller {
       ctx.body = { success: false, data: null };
     }
   }
+  async updateUser() {
+    const ctx = this.ctx;
+  }
 }
 
 module.exports = UserController;

@@ -56,6 +56,10 @@ class AdvController extends Controller {
       ctx.body = { success: false, data: null };
     }
   }
+  async updateAdv() {
+    const ctx = this.ctx;
+    const advId = ctx.request.body.id;
+  }
   async postPhoto() {
     const ctx = this.ctx;
     ctx.body = 'success';
