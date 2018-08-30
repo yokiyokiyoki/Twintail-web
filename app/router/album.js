@@ -5,4 +5,5 @@ module.exports = app => {
   router.get('/api/getAlbumDetail', controller.album.getAlbumDetail);
   router.get('/api/getAllAlbums', controller.album.getAllAlbums);
   router.post('/api/addAlbumStar', controller.album.addAlbumStar);
+  router.post('/api/deleteAlbum', controller.album.deleteAlbum);
 };
