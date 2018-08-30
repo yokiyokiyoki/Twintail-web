@@ -68,6 +68,11 @@ class UserController extends Controller {
   }
   async updateUser() {
     const ctx = this.ctx;
+    const userId = ctx.request.body.id;
+  }
+  async deleteUser() {
+    const ctx = this.ctx;
+    const userId = ctx.request.body.id;
   }
 }
 

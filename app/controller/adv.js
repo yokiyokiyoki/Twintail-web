@@ -60,6 +60,10 @@ class AdvController extends Controller {
     const ctx = this.ctx;
     const advId = ctx.request.body.id;
   }
+  async deleteAdv() {
+    const ctx = this.ctx;
+    const advId = ctx.request.body.id;
+  }
   async postPhoto() {
     const ctx = this.ctx;
     ctx.body = 'success';

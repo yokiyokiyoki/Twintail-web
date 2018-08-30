@@ -45,6 +45,10 @@ class AlbumController extends Controller {
   async updateAlbum() {
     const ctx = this.ctx;
   }
+  async deleteAlbum() {
+    const ctx = this.ctx;
+    const albumId = ctx.request.body.id;
+  }
   async insertAlbum() {
     const ctx = this.ctx;
     const parts = this.ctx.multipart({ autoFields: true });
