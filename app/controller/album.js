@@ -49,7 +49,7 @@ class AlbumController extends Controller {
     const ctx = this.ctx;
     const albumId = ctx.request.body.id;
     const photoResult = await this.app.mysql.delete('t_photo', {
-      album_id: albumId,
+      where: { album_id: albumId },
     });
     const result = await this.app.mysql.delete('t_album', {
       id: albumId,

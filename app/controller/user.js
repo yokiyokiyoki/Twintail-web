@@ -74,8 +74,9 @@ class UserController extends Controller {
     const ctx = this.ctx;
     const userId = ctx.request.body.id;
     const albumResult = await this.app.mysql.select('t_album', {
-      people_id: userId,
+      where: { people_id: userId },
     });
+    // console.log(albumResult);
     for (let i = 0; i < albumResult.length; i++) {
       let photoResult = await this.app.mysql.delete('t_photo', {
         album_id: albumResult[i].id,
