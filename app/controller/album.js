@@ -157,7 +157,12 @@ class AlbumController extends Controller {
       return;
     }
     // console.log(isExist);
-    const albumResult = await this.app.mysql.insert('t_album', albumStorage);
+    const albumResult = await this.app.mysql.insert('t_album', {
+      people_id: albumStorage.people_id,
+      album_name: albumStorage.album_name,
+      is_banner: albumStorage.is_banner,
+      creatAt: albumStorage.creatAt,
+    });
     const insertAlbumSuccess = albumResult.affectedRows === 1;
     if (insertAlbumSuccess) {
       //是否插入成功
