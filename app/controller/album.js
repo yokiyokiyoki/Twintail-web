@@ -44,12 +44,80 @@ class AlbumController extends Controller {
   }
   async updateAlbum() {
     const ctx = this.ctx;
+    const parts = this.ctx.multipart({ autoFields: true });
+    const files = [];
+    let stream;
+    while ((stream = await parts()) != null) {
+      const filename = stream.filename.toLowerCase();
+      const target = path.join(
+        this.config.baseDir,
+        'app/public/photo',
+        filename
+      );
+      const writeStream = fs.createWriteStream(target);
+      await pump(stream, writeStream);
+      files.push(filename);
+    }
+    let storage = parts.field;
+    // console.log(storage, files);
+    if (storage.deleteList) {
+      //如果有删除list的话，那么先删除掉photo表里面的
+      let deleteList = storage.deleteList.split(',');
+      deleteList.forEach(async item => {
+        const photoResult = await this.app.mysql.delete('t_photo', {
+          id: item,
+        });
+      });
+      // console.log(deleteList);
+    }
+
+    //查出该专辑的star
+    // const post = await this.app.mysql.get('t_album', { id: storage.album_id });
+    let albumStorage = {
+      // star: post.star,
+      id: storage.album_id,
+      people_id: storage.people_id,
+      is_banner: storage.is_banner,
+      creatAt: storage.creatAt,
+      album_name: storage.album_name,
+    };
+    const result = await this.app.mysql.update('t_album', albumStorage);
+    // 判断更新成功
+    const updateSuccess = result.affectedRows === 1;
+    //查询全表
+    const photos = await this.app.mysql.select('t_photo', {
+      where: { album_id: storage.album_id },
+    });
+    // console.log(photos);
+    //更新已经有的图片的is_cover
+    photos.forEach(async (item, index) => {
+      await this.app.mysql.update('t_photo', {
+        id: item.id,
+        photo_url: item.photo_url,
+        album_id: item.album_id,
+        is_cover: index == +storage.coverIndex - 1 ? '1' : '0',
+      });
+    });
+    if (updateSuccess) {
+      //新的图片存入图片数据库
+      files.forEach(async (item, index) => {
+        await this.app.mysql.insert('t_photo', {
+          photo_url: `/public/photo/${item}`,
+          album_id: storage.album_id,
+          is_cover:
+            +storage.coverIndex + photos.length - 1 == index ? '1' : '0',
+        });
+      });
+      ctx.body = { success: true, data: storage };
+    } else {
+      ctx.body = { success: false, data: null };
+    }
   }
   async deleteAlbum() {
     const ctx = this.ctx;
     const albumId = ctx.request.body.id;
     const photoResult = await this.app.mysql.delete('t_photo', {
-      where: { album_id: albumId },
+      album_id: albumId,
     });
     const result = await this.app.mysql.delete('t_album', {
       id: albumId,
@@ -98,6 +166,7 @@ class AlbumController extends Controller {
         await this.app.mysql.insert('t_photo', {
           photo_url: `/public/photo/${item}`,
           album_id: albumResult.insertId,
+          is_cover: albumStorage.coverIndex - 1 == index ? 1 : 0,
         });
       });
       ctx.body = { success: true, data: albumStorage };

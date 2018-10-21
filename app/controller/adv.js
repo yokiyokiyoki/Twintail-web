@@ -71,15 +71,27 @@ class AdvController extends Controller {
       await pump(stream, writeStream);
       files.push(filename);
     }
-    const result = await this.app.mysql.update('t_adv', parts.field);
+    console.log(parts.field, files);
+    let result = {};
+    if (files.length == 0) {
+      //如果图片没有更新
+      result = await this.app.mysql.update('t_adv', parts.field);
+    } else {
+      result = await this.app.mysql.update('t_adv', {
+        id: parts.field.id,
+        jump_url: parts.field.jump_url,
+        content: parts.field.content,
+        photo_url: `/public/adv_pic/${files[0]}`,
+      });
+    }
+
     const updateSuccess = result.affectedRows === 1;
     if (updateSuccess) {
       ctx.body = { success: true, data: result };
     } else {
       ctx.body = { success: false, message: '更新失败' };
     }
-    // ctx.body = 'success';
-    console.log(parts.field);
+    // console.log(parts.field);
   }
   async deleteAdv() {
     const ctx = this.ctx;

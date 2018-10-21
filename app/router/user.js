@@ -5,4 +5,5 @@ module.exports = app => {
   router.get('/api/getUser', controller.user.getUser);
   router.post('/api/insertUser', controller.user.insertUser);
   router.post('/api/deleteUser', controller.user.deleteUser);
+  router.post('/api/updateUser', controller.user.updateUser);
 };

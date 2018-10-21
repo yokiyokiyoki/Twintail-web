@@ -68,7 +68,42 @@ class UserController extends Controller {
   }
   async updateUser() {
     const ctx = this.ctx;
-    const userId = ctx.request.body.id;
+    const parts = this.ctx.multipart({ autoFields: true });
+    const files = [];
+    let stream;
+    while ((stream = await parts()) != null) {
+      const filename = stream.filename.toLowerCase();
+      const target = path.join(
+        this.config.baseDir,
+        'app/public/tx_pic',
+        filename
+      );
+      const writeStream = fs.createWriteStream(target);
+      await pump(stream, writeStream);
+      files.push(filename);
+    }
+    console.log(parts.field);
+    let result = {};
+    if (files.length == 0) {
+      //如果图片没有更新
+      result = await this.app.mysql.update('t_people', parts.field);
+    } else {
+      result = await this.app.mysql.update('t_people', {
+        id: parts.field.id,
+        weibo: parts.field.weibo,
+        self_ID: parts.field.self_ID,
+        intro: parts.field.intro,
+        username: parts.field.username,
+        is_member: parts.field.is_member,
+        tx_pic: `/public/tx_pic/${files[0]}`,
+      });
+    }
+    const updateSuccess = result.affectedRows === 1;
+    if (updateSuccess) {
+      ctx.body = { success: true, data: result };
+    } else {
+      ctx.body = { success: false, message: '更新失败' };
+    }
   }
   async deleteUser() {
     const ctx = this.ctx;
