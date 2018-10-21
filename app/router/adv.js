@@ -6,4 +6,5 @@ module.exports = app => {
   router.get('/api/getAllAdvs', controller.adv.getAllAdvs);
   router.get('/api/getAdvDetail', controller.adv.getAdvDetail);
   router.post('/api/deleteAdv', controller.adv.deleteAdv);
+  router.post('/api/updateAdv', controller.adv.updateAdv);
 };

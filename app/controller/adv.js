@@ -46,7 +46,6 @@ class AdvController extends Controller {
     }
     let storage = { ...parts.field, photo_url: `/public/adv_pic/${files[0]}` };
 
-    console.log(ctx.request.body, files, parts.field, storage, parts);
     const result = await this.app.mysql.insert('t_adv', storage);
     const insertSuccess = result.affectedRows === 1;
     if (insertSuccess) {
@@ -58,7 +57,29 @@ class AdvController extends Controller {
   }
   async updateAdv() {
     const ctx = this.ctx;
-    const advId = ctx.request.body.id;
+    const parts = this.ctx.multipart({ autoFields: true });
+    const files = [];
+    let stream;
+    while ((stream = await parts()) != null) {
+      const filename = stream.filename.toLowerCase();
+      const target = path.join(
+        this.config.baseDir,
+        'app/public/adv_pic',
+        filename
+      );
+      const writeStream = fs.createWriteStream(target);
+      await pump(stream, writeStream);
+      files.push(filename);
+    }
+    const result = await this.app.mysql.update('t_adv', parts.field);
+    const updateSuccess = result.affectedRows === 1;
+    if (updateSuccess) {
+      ctx.body = { success: true, data: result };
+    } else {
+      ctx.body = { success: false, message: '更新失败' };
+    }
+    // ctx.body = 'success';
+    console.log(parts.field);
   }
   async deleteAdv() {
     const ctx = this.ctx;
