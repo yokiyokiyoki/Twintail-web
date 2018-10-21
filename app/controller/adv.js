@@ -12,7 +12,7 @@ class AdvController extends Controller {
       if (result.length) {
         ctx.body = { data: result, success: true };
       } else {
-        ctx.body = { data: [result], success: true };
+        ctx.body = { data: [], success: true };
       }
     } else {
       ctx.body = { data: null, success: false };
@@ -71,7 +71,7 @@ class AdvController extends Controller {
       await pump(stream, writeStream);
       files.push(filename);
     }
-    console.log(parts.field, files);
+
     let result = {};
     if (files.length == 0) {
       //如果图片没有更新
