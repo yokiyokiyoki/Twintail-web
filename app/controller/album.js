@@ -80,6 +80,7 @@ class AlbumController extends Controller {
       is_banner: storage.is_banner,
       creatAt: storage.creatAt,
       album_name: storage.album_name,
+      photographer: storage.photographer,
     };
     const result = await this.app.mysql.update('t_album', albumStorage);
     // 判断更新成功
@@ -162,6 +163,7 @@ class AlbumController extends Controller {
       album_name: albumStorage.album_name,
       is_banner: albumStorage.is_banner,
       creatAt: albumStorage.creatAt,
+      photographer: albumStorage.photographer,
     });
     const insertAlbumSuccess = albumResult.affectedRows === 1;
     if (insertAlbumSuccess) {
