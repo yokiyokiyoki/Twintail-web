@@ -7,10 +7,10 @@
 > 之前没有做迁移，目前就四张表，有需要的就自己搞下，不多
 
 
-![img](https://ibb.co/HDWzmjZ)
-![img](https://ibb.co/SJ9RymX)
-![img](https://ibb.co/jzXwSWZ)
-![img](https://ibb.co/bFYZLsW)
-![img](https://ibb.co/KFBf9Rv)
+![img](https://i.ibb.co/27DtXTJ/image.png)
+![img](https://i.ibb.co/25fghM7/image.png)
+![img](https://i.ibb.co/hczdSZ1/image.png)
+![img](https://i.ibb.co/w78XCS0/image.png)
+![img](https://i.ibb.co/t8nvbkr/image.png)
 
 
